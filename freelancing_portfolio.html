@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Full-Stack Developer Portfolio</title>
+<style>
+:root{--bg:#fff;--surface:#f6f7f9;--text:#15181d;--muted:#5b6472;--border:#e2e5ea;--accent:#2457d6;--accent-text:#fff;--radius:6px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1216;--surface:#171b21;--text:#e8eaee;--muted:#9aa3b2;--border:#262c35;--accent:#6b97ff;--accent-text:#0f1216}}
+:root[data-theme="dark"]{--bg:#0f1216;--surface:#171b21;--text:#e8eaee;--muted:#9aa3b2;--border:#262c35;--accent:#6b97ff;--accent-text:#0f1216}
+html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--border);z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+nav{display:flex;gap:20px}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--text)}
+.brand{font-weight:600;font-size:15px}
+.theme{background:none;border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:4px 10px;font-size:13px;cursor:pointer}
+section{padding:56px 0;border-bottom:1px solid var(--border)}
+h1{font-size:34px;line-height:1.2;margin:0 0 12px}
+h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 20px;font-weight:600}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 24px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-text);padding:9px 16px;border-radius:var(--radius);text-decoration:none;font-size:14px;font-weight:500}
+.btn.alt{background:none;color:var(--text);border:1px solid var(--border);margin-left:8px}
+.projects{list-style:none;margin:0;padding:0}
+.project{display:grid;grid-template-columns:1fr auto;gap:8px 24px;padding:18px 0;border-top:1px solid var(--border)}
+.project:first-child{border-top:0;padding-top:0}
+.project h3{margin:0;font-size:17px}
+.project p{margin:4px 0 8px;color:var(--muted);font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.tags li{font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 8px;color:var(--muted)}
+.visit{align-self:start;font-size:14px;white-space:nowrap}
+dl{margin:0}
+.row{display:grid;grid-template-columns:160px 1fr;gap:8px 24px;padding:12px 0;border-top:1px solid var(--border)}
+.row:first-child{border-top:0;padding-top:0}
+dt{font-weight:600;font-size:15px}
+dd{margin:0;color:var(--muted)}
+footer{padding:24px 0;color:var(--muted);font-size:13px}
+@media (max-width:600px){nav{display:none}h1{font-size:28px}.project{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:2px}.btn.alt{margin:8px 0 0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+/* Edit this block: it is the only place content lives. */
+const PROFILE = {
+  name: "Aniket Ranjan",                       
+  title: "Full-Stack Developer",
+  summary: "I build and ship web applications end to end: React and TypeScript on the front, Node.js services and databases behind them, deployed with Docker on Linux.",
+  email: "aniket.ranjan709@gmail.com",                    
+  github: "https://github.com/aniket709",            
+  linkedin: "https://www.linkedin.com/in/aniket-ranjan-093173235/",
+};
+
+const PROJECTS = [
+  { name: "Local Trade Street", url: "https://localtradestreet.com/",
+    description: "Web platform for local trade, in production.",
+    stack: ["React", "Node.js", "Express"] },
+  { name: "LLD Loop", url: "https://lld-loop1.vercel.app/",
+    description: "Low-level design practice app.",
+    stack: ["React", "TypeScript"] },
+  { name: "Video Downloader Pro", url: "https://video-downloader-pro-navy.vercel.app/",
+    description: "Web tool for downloading videos from links.",
+    stack: ["React", "Node.js"] },
+  { name: "Westeros", url: "https://westeros-six.vercel.app/",
+    description: "Themed web application.",
+    stack: ["React", "JavaScript"] },
+];
+
+const SKILLS = [
+  { group: "Frontend", items: "React.js, TypeScript, JavaScript" },
+  { group: "Backend", items: "Node.js, Express.js, REST APIs, WebSockets" },
+  { group: "Data", items: "PostgreSQL, MongoDB, Prisma, Redis" },
+  { group: "Infrastructure", items: "Docker, Linux" },
+];
+
+const SECTIONS = [["projects", "Projects"], ["skills", "Skills"], ["contact", "Contact"]];
+
+function useTheme() {
+  const [theme, setTheme] = useState(null);
+  useEffect(() => {
+    if (theme) document.documentElement.dataset.theme = theme;
+  }, [theme]);
+  const isDark = theme
+    ? theme === "dark"
+    : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return [isDark, () => setTheme(isDark ? "light" : "dark")];
+}
+
+function Header() {
+  const [isDark, toggle] = useTheme();
+  return (
+    <header>
+      <div className="wrap">
+        <span className="brand">{PROFILE.name || PROFILE.title}</span>
+        <nav aria-label="Primary">
+          {SECTIONS.map(([id, label]) => <a key={id} href={"#" + id}>{label}</a>)}
+        </nav>
+        <button className="theme" onClick={toggle} aria-pressed={isDark}>
+          {isDark ? "Light" : "Dark"} mode
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function Intro() {
+  return (
+    <section aria-labelledby="intro-title">
+      <h1 id="intro-title">{PROFILE.name ? PROFILE.name + " — " + PROFILE.title : PROFILE.title}</h1>
+      <p className="lead">{PROFILE.summary}</p>
+      <a className="btn" href="#projects">View projects</a>
+      {PROFILE.email && <a className="btn alt" href={"mailto:" + PROFILE.email}>Email me</a>}
+    </section>
+  );
+}
+
+function Projects() {
+  return (
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <ul className="projects">
+        {PROJECTS.map(p => (
+          <li className="project" key={p.url}>
+            <div>
+              <h3>{p.name}</h3>
+              <p>{p.description}</p>
+              <ul className="tags" aria-label="Tech stack">
+                {p.stack.map(s => <li key={s}>{s}</li>)}
+              </ul>
+            </div>
+            <a className="visit" href={p.url} target="_blank" rel="noopener noreferrer">
+              Visit site<span className="sr" style={{position:"absolute",left:-9999}}> {p.name} (opens in new tab)</span> →
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+      <dl>
+        {SKILLS.map(s => (
+          <div className="row" key={s.group}>
+            <dt>{s.group}</dt>
+            <dd>{s.items}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function Contact() {
+  const links = [
+    PROFILE.email && ["Email", "mailto:" + PROFILE.email, PROFILE.email],
+    PROFILE.github && ["GitHub", PROFILE.github, PROFILE.github.replace("https://", "")],
+    PROFILE.linkedin && ["LinkedIn", PROFILE.linkedin, PROFILE.linkedin.replace("https://", "")],
+  ].filter(Boolean);
+  return (
+    <section id="contact" aria-labelledby="contact-title" style={{borderBottom:0}}>
+      <h2 id="contact-title">Contact</h2>
+      {links.length === 0
+        ? <p className="lead">Add your email and profile links in the PROFILE block to show them here.</p>
+        : <dl>{links.map(([label, href, text]) => (
+            <div className="row" key={label}>
+              <dt>{label}</dt>
+              <dd><a href={href} rel="noopener noreferrer">{text}</a></dd>
+            </div>
+          ))}</dl>}
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Header />
+      <main className="wrap">
+        <Intro /><Projects /><Skills /><Contact />
+      </main>
+      <footer><div className="wrap">© {new Date().getFullYear()} {PROFILE.name}</div></footer>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
